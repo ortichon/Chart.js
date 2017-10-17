@@ -818,7 +818,7 @@ module.exports = function(Chart) {
 			});
 
 			// Draw all of the tick labels, tick marks, and grid lines at the correct places
-			helpers.each(itemsToDraw, function(itemToDraw) {
+			helpers.each(itemsToDraw, function(itemToDraw, index) {
 				if (gridLines.display) {
 					context.save();
 					context.lineWidth = itemToDraw.glWidth;
@@ -850,7 +850,11 @@ module.exports = function(Chart) {
 					context.translate(itemToDraw.labelX, itemToDraw.labelY);
 					context.rotate(itemToDraw.rotation);
 					context.font = itemToDraw.major ? majorTickFont.font : tickFont.font;
-					context.fillStyle = itemToDraw.major ? majorTickFontColor : tickFontColor;
+					if (Object.prototype.toString.call( tickFontColor ) === '[object Array]'){
+						context.fillStyle = itemToDraw.major ? majorTickFontColor[index] : tickFontColor[index];
+					} else {
+						context.fillStyle = itemToDraw.major ? majorTickFontColor : tickFontColor;
+					}
 					context.textBaseline = itemToDraw.textBaseline;
 					context.textAlign = itemToDraw.textAlign;
 
